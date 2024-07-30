@@ -6,6 +6,7 @@ import pytest
 base_url = "https://restful-booker.herokuapp.com/booking"
 auth_url = "https://restful-booker.herokuapp.com/auth"
 
+
 @pytest.fixture(scope='module')
 def auth_token():
     authdata = {
@@ -15,6 +16,7 @@ def auth_token():
     response = requests.post(auth_url, json=authdata)
     token = response.json()["token"]
     yield token
+
 
 @pytest.fixture(scope="session")
 def booking_id():
@@ -41,17 +43,18 @@ def test_get_code():
     print(result)
     assert result.status_code
 
+
 @pytest.mark.skip
 def test_get_booking_by_id():
     response = requests.get(f'{base_url}/1')
     response_data = response.json()
     expected_keys = [
-            "firstname",
-            "lastname",
-            "totalprice",
-            "depositpaid",
-            "bookingdates",
-            "additionalneeds"
+        "firstname",
+        "lastname",
+        "totalprice",
+        "depositpaid",
+        "bookingdates",
+        "additionalneeds"
     ]
     # print(response_data)
     assert response.status_code == 200
@@ -70,6 +73,7 @@ def test_check_created_booking(booking_id):
     print(result.json())
     assert result.status_code == 200
     assert result.json()['firstname'] == "James"
+
 
 # @pytest.mark.xfail(reason='wrong status code')
 # def test_check_created_booking(booking_id):
@@ -106,15 +110,15 @@ def test_options():
     print(response.json())
 
 
-def test_options():
+def test_option():
     response = requests.head(f'{base_url}/1')
     assert response.status_code == 200
     print(response.headers)
 
+
 def test_delete_booking(booking_id, auth_token):
     token = {"Cookie": f"token={auth_token}"}
     response = requests.delete(f'{base_url}/{booking_id}', headers=token)
-    assert.response.status_code == 201
+    assert response.status_code == 201
     response_get = requests.get(f'{base_url}/{booking_id}')
-    assert.response_get.status_code == 404
-
+    assert response_get.status_code == 404
