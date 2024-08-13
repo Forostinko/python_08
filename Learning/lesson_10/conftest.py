@@ -10,3 +10,4 @@ def driver():
     print('\nquit browser...')
     #закрываем сессию после того как тесты прошли
     driver.quit()
+    # внесла что то
